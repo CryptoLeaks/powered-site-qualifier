@@ -17,7 +17,7 @@
 ## Source and reproducibility
 
 - **Source repository:** Not yet created or published.
-- **Review commit:** `REPLACE_WITH_CORE_REVIEW_COMMIT`
+- **Review commit:** `f70b48d862d1d78b9f3e25346c44409e5b687a44`
 - **Source submitted in this preview:** `source/`
 - **Run tests:** `.venv/bin/python -m unittest discover -s tests -v`
 - **Run locally:** `XAGENT_REVIEW_COMMIT=<review-commit> .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8787`

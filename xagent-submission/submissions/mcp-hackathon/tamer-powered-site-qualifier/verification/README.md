@@ -4,7 +4,7 @@ This preview is local-only. Replace placeholders after an approved public deploy
 
 ## Prerequisites
 
-- Review commit: `REPLACE_WITH_CORE_REVIEW_COMMIT`
+- Review commit: `f70b48d862d1d78b9f3e25346c44409e5b687a44`
 - API base URL: `http://127.0.0.1:8787/v1` for local validation
 - Authentication: none locally; public review access must be chosen before deployment
 

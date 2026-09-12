@@ -85,7 +85,7 @@ Official references checked: [X-Agent repository](https://github.com/xagentAI/xa
 
 ## Local review binding
 
-The exact core-service review commit is recorded in the final handoff and inserted into the X-Agent preview metadata. The local runtime must receive it through `XAGENT_REVIEW_COMMIT`; the public deployment must expose the same 40-character value from both proof endpoints.
+The exact core-service review commit is `f70b48d862d1d78b9f3e25346c44409e5b687a44`. It is inserted into the X-Agent preview metadata. The local runtime must receive it through `XAGENT_REVIEW_COMMIT`; the public deployment must expose the same 40-character value from both proof endpoints.
 
 ## Deployment proposal, not executed
 
