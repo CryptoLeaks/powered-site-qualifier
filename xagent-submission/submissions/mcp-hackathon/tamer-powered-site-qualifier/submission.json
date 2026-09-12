@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "name": "Powered-Site Qualifier API",
+  "slug": "tamer-powered-site-qualifier",
+  "sourceRepository": "TO_BE_CREATED_OR_SUPPLIED",
+  "reviewCommit": "REPLACE_WITH_CORE_REVIEW_COMMIT",
+  "apiBaseUrl": "TO_BE_DEPLOYED",
+  "healthCheckUrl": "TO_BE_DEPLOYED/health",
+  "deploymentProofUrl": "TO_BE_DEPLOYED/.well-known/xagent-verification.json"
+}
