@@ -26,6 +26,19 @@ Build phase completed on 2026-09-12:
 * The service performs normal scoring without an external network dependency; scoring code uses local deterministic logic only.
 * X-Agent preview package prepared under `xagent-submission/submissions/mcp-hackathon/tamer-powered-site-qualifier/`.
 
+## Hedera x402 phase
+
+Implemented locally, without accounts or payment execution:
+
+* `POST /v1/paid/qualify` with x402 v2 `402` challenge and `PAYMENT-REQUIRED` header.
+* Hedera testnet `exact` native-HBAR requirements (`hedera:testnet`, asset `0.0.0`, default `100000` tinybars).
+* Remote facilitator adapter for Blocky402 `/verify` and `/settle`, fail-closed unless `X402_MODE=remote` and seller configuration are present.
+* Explicit local mock mode and Python consuming client.
+* Future real-testnet Node consuming client using official `@x402/hedera` and `@x402/fetch` packages.
+* `.env.example`, evidence structure, architecture, wallet approval gate, and bounty checklist in `HEDERA-X402.md`.
+
+Local mock flow passed: initial HTTP `402`, Hedera testnet payment requirement, consuming-agent retry, HTTP `200`, and `READY` qualification. No facilitator request or Hedera transaction was made.
+
 ## Local verification
 
 Dependency-free scoring, API, container, and example-contract verification completed with:
@@ -71,7 +84,7 @@ Official references checked: [X-Agent repository](https://github.com/xagentAI/xa
 * No wallet, key, payment integration, or external registration.
 * No GitHub fork, branch, push, PR, or X-Agent submission.
 * No public deployment or HTTPS endpoint.
-* No x402 payment wrapper, testnet wallet, Hedera account, Blocky402 registration, consuming agent, or paid-request evidence.
+* No testnet wallet, Hedera account, Blocky402 registration, real paid-request evidence, public deployment, or external submission.
 
 ## Before submission
 

@@ -9,6 +9,7 @@ This project uses general infrastructure qualification heuristics informed by Ta
 * `GET /health` — X-Agent health/version binding.
 * `GET /.well-known/xagent-verification.json` — X-Agent deployment proof.
 * `POST /v1/qualify` — score a site.
+* `POST /v1/paid/qualify` — x402 v2-gated scoring route; local mock mode or approved Hedera testnet mode.
 * `GET /docs` — FastAPI OpenAPI UI.
 
 The supplied Compose file binds to loopback only. No public port is opened.
@@ -32,6 +33,8 @@ curl -sS http://127.0.0.1:8787/v1/qualify \
 ```
 
 The scoring engine is pure, deterministic, explainable, and has no database or outbound calls. Unknown fields are not guessed: they become missing information and may create blockers.
+
+The x402 boundary and consuming agents are documented in [HEDERA-X402.md](HEDERA-X402.md). Local mock mode does not represent blockchain settlement.
 
 ## Docker
 
