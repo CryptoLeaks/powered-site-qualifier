@@ -39,9 +39,11 @@ Implemented locally, without accounts or payment execution:
 
 Local mock flow passed: initial HTTP `402`, Hedera testnet payment requirement, consuming-agent retry, HTTP `200`, and `READY` qualification. No facilitator request or Hedera transaction was made.
 
+The x402 implementation commit is `306a8b2c0828eb65e7e51e4f2725057b00ef536d`. The repository remains local and clean.
+
 ## Local verification
 
-Dependency-free scoring, API, container, and example-contract verification completed with:
+Scoring, API, container, x402 mock-flow, and example-contract verification completed with:
 
 ```text
 Ran 3 tests in 0.000s
@@ -66,11 +68,10 @@ The official event page states the registration/build/submission period is Septe
 
 ## ETHOnline / Hedera x402 adaptation boundary
 
-The same qualification endpoint can be wrapped later, but payment work is intentionally not implemented. Minimum additional work is:
+The same qualification endpoint now has a local x402 wrapper. Minimum additional work is:
 
-1. Add an x402 HTTP 402 payment wrapper around a paid qualification route.
-2. Use Hedera testnet and Blocky402’s facilitator/testnet flow.
-3. Add a consuming agent that discovers/calls the endpoint and supplies payment proof.
+1. Use the real Hedera testnet and Blocky402 facilitator/testnet flow.
+2. Run the consuming agent with a dedicated testnet identity and payment proof.
 4. Create only the minimum testnet identity/funding after explicit approval; no wallet or secret exists in this project now.
 5. Demonstrate at least one successful paid request and settlement, with redacted evidence.
 6. Add the public GitHub/demo links and any exact ETHGlobal submission artifacts required by the live bounty page.
@@ -79,22 +80,22 @@ Official references checked: [X-Agent repository](https://github.com/xagentAI/xa
 
 ## Not done and explicitly stopped
 
-* No dependencies installed, API server started, Docker image built, or container run.
+* No Hedera account, wallet, or private key created.
 * No public port or firewall rule opened.
-* No wallet, key, payment integration, or external registration.
+* No real/testnet payment or facilitator call made.
+* No Blocky402 registration or external account created.
 * No GitHub fork, branch, push, PR, or X-Agent submission.
 * No public deployment or HTTPS endpoint.
-* No testnet wallet, Hedera account, Blocky402 registration, real paid-request evidence, public deployment, or external submission.
+* No real paid-request evidence or demo video.
 
 ## Before submission
 
-1. Install/build dependencies in an approved isolated environment or build the Docker image.
-2. Run unit tests and local API smoke tests.
-3. Create a local Git commit and verify all source files.
+1. Obtain approval for two dedicated Hedera testnet accounts and protected runtime secret handling.
+2. Confirm Blocky402 `/supported` and testnet faucet availability immediately before testing.
+3. Run one real paid request and capture redacted evidence.
 4. Deploy only after explicit approval, with HTTPS and a fixed public API URL.
-5. Set the exact deployed 40-character commit in `/health` and verification proof.
-6. Prepare X-Agent submission artifacts and rights declaration.
-7. Submit a PR only after explicit authorization.
+5. Set the exact deployed commit in `/health` and proof verification.
+6. Prepare public GitHub/demo artifacts and submit only after explicit authorization.
 
 ## Local review binding
 
@@ -111,3 +112,5 @@ The exact core-service review commit is `f70b48d862d1d78b9f3e25346c44409e5b687a4
 
 1. ETHOnline/Hedera deadline: freeze the base API, decide the paid route, then implement and test the x402/Blocky402/Hedera testnet wrapper and consuming agent.
 2. X-Agent deadline: deploy the same core service only after the payment branch is stable or keep the X-Agent submission on the unpaid core API; verify the exact reviewed commit and prepare the public submission package before September 19.
+
+Current estimated ETHOnline/Hedera readiness: 45%. Local implementation and mock evidence are ready; the mandatory real testnet payment, public service, public repository, and demo remain outstanding.
