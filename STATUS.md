@@ -37,7 +37,7 @@ Implemented locally, without accounts or payment execution:
 * Future real-testnet Node consuming client using official `@x402/hedera` and `@x402/fetch` packages.
 * `.env.example`, evidence structure, architecture, wallet approval gate, and bounty checklist in `HEDERA-X402.md`.
 
-Local mock flow passed: initial HTTP `402`, Hedera testnet payment requirement, consuming-agent retry, HTTP `200`, and `READY` qualification. No facilitator request or Hedera transaction was made.
+Local mock flow passed: initial HTTP `402`, Hedera testnet payment requirement, consuming-agent retry, HTTP `200`, and `READY` qualification. The separate real proof below completed the facilitator and Hedera transaction steps.
 
 The x402 implementation commit is `306a8b2c0828eb65e7e51e4f2725057b00ef536d`. The repository remains local and clean.
 
@@ -52,7 +52,7 @@ Read-only Blocky402 check completed on 2026-09-12:
 * Result: no testnet API key required according to the current Blocky402 documentation.
 * Native HBAR route: selected using asset `0.0.0`, which is documented by the official Hedera x402 mechanism.
 
-Stopped before account creation because the official Hedera Portal requires an authenticated interactive session that is not available in this workspace. No buyer/seller keys, accounts, `.secrets` file, faucet request, facilitator call, transaction, or real evidence were created. No assumptions were substituted for the missing portal access.
+This was the pre-proof gate state and is superseded by the real proof recorded below. The buyer/seller accounts and protected secret were supplied locally for the single TESTNET run; the secret was never printed or stored in evidence.
 
 ## Local verification
 
@@ -91,39 +91,74 @@ The same qualification endpoint now has a local x402 wrapper. Minimum additional
 
 Official references checked: [X-Agent repository](https://github.com/xagentAI/xagt-plugin), [X-Agent submission guide](https://github.com/xagentAI/xagt-plugin/blob/main/docs/agent-submission-guide.md), [ETHOnline 2026 Hedera bounty page](https://ethglobal.com/events/ethonline2026/prizes/hedera), [Hedera x402 overview](https://hedera.com/blog/hedera-and-the-x402-payment-standard/), and [Blocky402 API reference](https://blocky402.com/docs/api-reference/).
 
-## Not done and explicitly stopped
+## Not done after the single proof
 
 * No Hedera account, wallet, or private key created.
-* No public port or firewall rule opened.
-* No real/testnet payment or facilitator call made.
+* No direct API port is public; only proxy ports 80/443 are exposed.
+* No additional real/testnet payment or facilitator call will be made in this run.
 * No Blocky402 registration or external account created.
 * No GitHub fork, branch, push, PR, or X-Agent submission.
-* No public deployment or HTTPS endpoint.
-* No real paid-request evidence or demo video.
+* Public deployment and HTTPS endpoint are now live; GitHub publication remains pending.
+* Real paid-request evidence is complete; demo video remains outstanding.
 
 ## Before submission
 
-1. Obtain approval for two dedicated Hedera testnet accounts and protected runtime secret handling.
-2. Confirm Blocky402 `/supported` and testnet faucet availability immediately before testing.
-3. Run one real paid request and capture redacted evidence.
-4. Deploy only after explicit approval, with HTTPS and a fixed public API URL.
-5. Set the exact deployed commit in `/health` and proof verification.
-6. Prepare public GitHub/demo artifacts and submit only after explicit authorization.
+1. Publish the sanitized repository only after final rights/license review.
+2. Record the demo only after approval; do not repeat a payment without approval.
+3. Submit only after explicit ETHOnline/X-Agent authorization.
 
 ## Local review binding
 
 The exact core-service review commit is `f70b48d862d1d78b9f3e25346c44409e5b687a44`. It is inserted into the X-Agent preview metadata. The local runtime must receive it through `XAGENT_REVIEW_COMMIT`; the public deployment must expose the same 40-character value from both proof endpoints.
 
-## Deployment proposal, not executed
+## Public deployment completed
 
-* Application: container on internal `127.0.0.1:8787`.
-* Reverse proxy: Caddy or Nginx on the VPS, terminating HTTPS on external TCP 443 and proxying to `127.0.0.1:8787`.
-* Authentication: initially a short-lived review credential or API key, plus rate limiting; do not expose an unauthenticated production endpoint.
-* Firewall: allow only 443 (and administrative access already approved); no firewall change has been made.
+* Public base URL: `https://qualifier.cryptoleaks.agency`.
+* Health: `https://qualifier.cryptoleaks.agency/health`.
+* Proof: `https://qualifier.cryptoleaks.agency/.well-known/xagent-verification.json`.
+* Paid endpoint: `https://qualifier.cryptoleaks.agency/v1/paid/qualify`.
+* Application: reviewed image on a private Docker network, with no host port mapping for 8787.
+* Reverse proxy: Caddy, terminating automatic Let's Encrypt HTTPS and proxying internally to the API.
+* Firewall: effective default-deny INPUT policy with TCP 22, 80, and 443 allowed; no 8787 rule.
+* Fail2ban: active with the `sshd` jail.
+* The buyer key is not present in the API container environment.
 
 ## Priority
 
 1. ETHOnline/Hedera deadline: freeze the base API, decide the paid route, then implement and test the x402/Blocky402/Hedera testnet wrapper and consuming agent.
 2. X-Agent deadline: deploy the same core service only after the payment branch is stable or keep the X-Agent submission on the unpaid core API; verify the exact reviewed commit and prepare the public submission package before September 19.
 
-Current estimated ETHOnline/Hedera readiness: 45%. Local implementation and mock evidence are ready; the mandatory real testnet payment, public service, public repository, and demo remain outstanding.
+Current estimated ETHOnline/Hedera readiness: 75%. The single real Hedera TESTNET payment proof and public HTTPS service are complete; public repository, demo, and final submission remain outstanding.
+
+## Real Hedera TESTNET proof completed
+
+On 2026-09-12, exactly one payment was executed through the official `@x402/hedera` consuming client against the loopback API. The API returned the initial HTTP 402, Blocky402 verification succeeded, Blocky402 settlement succeeded, and the retry returned HTTP 200 with classification `READY`.
+
+* Buyer: `0.0.10488940`
+* Seller/pay-to: `0.0.10489770`
+* Network: `hedera:testnet`
+* Asset: native HBAR `0.0.0`
+* Amount: `100000` tinybars (`0.001` HBAR)
+* Fee payer: `0.0.7162784`
+* Transaction: `0.0.7162784@1789186391.831327025`
+* Consensus timestamp: `2026-09-12T04:13:18Z`
+* Hedera Mirror Node result: `SUCCESS`; transfers show `100000` tinybars from buyer to seller.
+
+Redacted evidence is in `evidence/hedera-real/`. No private key or raw signed payload was stored. The API remains private to Docker; no GitHub push, external submission, or mainnet action occurred.
+
+Remaining blockers before submission: public GitHub publication, five-minute-or-less demo video, final rights confirmation, final public links, and explicit submission authorization.
+
+## Public deployment preparation and result
+
+Preparation completed without external exposure:
+
+* Added `deploy/docker-compose.prod.yml` with a private internal network, API limits of 1 vCPU/1 GiB, restart policies, non-root API image, read-only filesystems, dropped capabilities, no host networking, and no Docker socket.
+* Added `deploy/Caddyfile` for automatic HTTPS, HTTP-to-HTTPS redirect, 256 KB request-body limit, security headers, and rotated access logs.
+* Added `deploy/README.md`, `deploy/.env.example`, and `DEMO-SCRIPT.md`.
+* Tightened `.gitignore` and `.dockerignore` for secrets, keys, logs, caches, node modules, and raw payment payloads.
+* `qualifier.cryptoleaks.agency` resolves to `89.58.39.50` and is now the approved public FQDN.
+* Let’s Encrypt certificate is valid from 2026-09-12 through 2026-12-11; Caddy will renew automatically.
+* Public health/proof/qualification checks passed; unpaid paid endpoint returned HTTP 402 with the expected Hedera TESTNET terms.
+* External connection to `89.58.39.50:8787` failed as expected.
+
+Updated readiness estimates: ETHOnline `85%`; X-Agent `85%`. The sanitized public package is committed locally. Remaining actions are GitHub publication, rights/license confirmation, demo recording, and external submissions.

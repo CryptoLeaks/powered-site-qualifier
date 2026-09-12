@@ -1,44 +1,55 @@
 # Verification evidence
 
-This preview is local-only. Replace placeholders after an approved public deployment.
+## Public prerequisites
 
-## Prerequisites
-
+- API base URL: `https://qualifier.cryptoleaks.agency/v1`
 - Review commit: `f70b48d862d1d78b9f3e25346c44409e5b687a44`
-- API base URL: `http://127.0.0.1:8787/v1` for local validation
-- Authentication: none locally; public review access must be chosen before deployment
+- No API key is required for the health, proof, or unpaid capability checks.
 
 ## Health check
 
 ```bash
-curl --fail --silent --show-error http://127.0.0.1:8787/health
+curl --fail --silent --show-error \
+  https://qualifier.cryptoleaks.agency/health
 ```
 
-Expected response:
+Expected:
 
 ```json
-{"status":"ok","commit":"<40-character review commit>"}
+{"status":"ok","commit":"f70b48d862d1d78b9f3e25346c44409e5b687a44"}
 ```
 
 ## Deployment proof
 
 ```bash
-curl --fail --silent --show-error http://127.0.0.1:8787/.well-known/xagent-verification.json
+curl --fail --silent --show-error \
+  https://qualifier.cryptoleaks.agency/.well-known/xagent-verification.json
 ```
 
-Expected response:
+Expected:
 
 ```json
-{"schemaVersion":1,"slug":"tamer-powered-site-qualifier","commit":"<40-character review commit>"}
+{"schemaVersion":1,"slug":"tamer-powered-site-qualifier","commit":"f70b48d862d1d78b9f3e25346c44409e5b687a44"}
 ```
 
-## Capability call
+## Unpaid capability
 
 ```bash
 curl --fail --silent --show-error \
-  --request POST http://127.0.0.1:8787/v1/qualify \
+  --request POST https://qualifier.cryptoleaks.agency/v1/qualify \
   --header 'content-type: application/json' \
   --data @source/examples/site-ready.json
 ```
 
-Expected result: HTTP 200 with both readiness scores, positives, missing information, blockers, next questions, and a classification. Unknown fields or negative numeric values return HTTP 422.
+Expected result: HTTP 200, both readiness scores, and classification `READY`.
+
+## Paid boundary without payment
+
+```bash
+curl --silent --show-error --include \
+  --request POST https://qualifier.cryptoleaks.agency/v1/paid/qualify \
+  --header 'content-type: application/json' \
+  --data @source/examples/site-ready.json
+```
+
+Expected result: HTTP 402 with x402 v2 `exact`, `hedera:testnet`, native HBAR asset `0.0.0`, and the configured amount/pay-to/fee-payer fields. Do not attach a payment header during this check.

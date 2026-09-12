@@ -1,18 +1,69 @@
-# Powered-Site Qualifier API
+# Powered-Site Qualifier
 
-Production-style deterministic API for an initial powered-site qualification. It returns separate Bitcoin Mining and AI/Data Center readiness scores, evidence gaps, blockers, next questions, and a classification.
+Powered-Site Qualifier is a deterministic, machine-readable screening API for early powered-site diligence. Given structured site facts, it returns two separate readiness scores:
 
-This project uses general infrastructure qualification heuristics informed by Tamer's domain expertise. It contains no confidential client/site data.
+- **Bitcoin Mining Readiness** — power, capacity, price, utility status, land, commercial path, and operating inputs relevant to mining-scale deployment.
+- **AI/Data Center Readiness** — power, capacity, fiber, water, land, permitting, expansion, and commercial inputs relevant to AI/data-center infrastructure.
 
-## Endpoints
+It also reports positives, missing information, major blockers, next questions, and a classification such as `READY`. It is an initial qualification aid, not engineering, utility, legal, environmental, financial, or investment diligence.
 
-* `GET /health` — X-Agent health/version binding.
-* `GET /.well-known/xagent-verification.json` — X-Agent deployment proof.
-* `POST /v1/qualify` — score a site.
-* `POST /v1/paid/qualify` — x402 v2-gated scoring route; local mock mode or approved Hedera testnet mode.
-* `GET /docs` — FastAPI OpenAPI UI.
+## Live API
 
-The supplied Compose file binds to loopback only. No public port is opened.
+Public base URL: <https://qualifier.cryptoleaks.agency>
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /health` | Health and exact reviewed commit binding |
+| `GET /.well-known/xagent-verification.json` | X-Agent deployment proof |
+| `POST /v1/qualify` | Unpaid deterministic qualification |
+| `POST /v1/paid/qualify` | x402-gated qualification |
+| `GET /docs` | FastAPI OpenAPI documentation |
+
+The public service is HTTPS-only in normal use; HTTP redirects to HTTPS. The API container is private to Docker and port 8787 is not published.
+
+```bash
+curl --fail --silent https://qualifier.cryptoleaks.agency/health
+curl --fail --silent https://qualifier.cryptoleaks.agency/.well-known/xagent-verification.json
+curl --fail --silent --request POST \
+  https://qualifier.cryptoleaks.agency/v1/qualify \
+  --header 'content-type: application/json' \
+  --data @examples/site-ready.json
+```
+
+The live reviewed binding is:
+
+```json
+{"status":"ok","commit":"f70b48d862d1d78b9f3e25346c44409e5b687a44"}
+```
+
+## Example result
+
+`examples/site-ready.json` produces `READY` with Bitcoin Mining Readiness `100` and AI/Data Center Readiness `100`. The response also includes the known-input basis, key positives, missing information, blockers, and recommended next questions. `examples/site-incomplete.json` demonstrates how unknowns become evidence gaps instead of guesses.
+
+## Hedera x402 payment flow
+
+The paid route uses x402 v2 `exact` on `hedera:testnet`, native HBAR asset `0.0.0`, and the hosted Blocky402 facilitator. An unpaid request returns HTTP 402 with the payment requirements. A consuming agent signs with the buyer key locally, retries with the payment header, and the service calls Blocky402 `/verify` and `/settle` before returning HTTP 200.
+
+```text
+Agent → API: POST /v1/paid/qualify
+API → Agent: 402 PAYMENT-REQUIRED
+Agent: sign Hedera TESTNET payment locally
+API → Blocky402: /verify → /settle
+Blocky402 → Hedera TESTNET: confirm settlement
+API → Agent: 200 qualification + payment response
+```
+
+One real proof completed on Hedera TESTNET:
+
+- Buyer: `0.0.10488940`
+- Seller/pay-to: `0.0.10489770`
+- Amount: `100000` tinybars (`0.001` testnet HBAR)
+- Blocky402 verify: success
+- Blocky402 settle: success
+- Transaction: `0.0.7162784@1789186391.831327025`
+- Final response: HTTP 200, classification `READY`
+
+Only redacted evidence is included in [`evidence/hedera-real/`](evidence/hedera-real/). No private key or raw signed payload is included.
 
 ## Run locally
 
@@ -20,34 +71,40 @@ The supplied Compose file binds to loopback only. No public port is opened.
 python3 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
-export XAGENT_REVIEW_COMMIT=local-development
-uvicorn app.main:app --host 127.0.0.1 --port 8787
+XAGENT_REVIEW_COMMIT=local-development \
+  uvicorn app.main:app --host 127.0.0.1 --port 8787
 ```
 
-The placeholder commit must be replaced by the exact 40-character reviewed Git commit before any X-Agent submission or public deployment.
-
-```bash
-curl -sS http://127.0.0.1:8787/v1/qualify \
-  -H 'content-type: application/json' \
-  -d @examples/site-ready.json
-```
-
-The scoring engine is pure, deterministic, explainable, and has no database or outbound calls. Unknown fields are not guessed: they become missing information and may create blockers.
-
-The x402 boundary and consuming agents are documented in [HEDERA-X402.md](HEDERA-X402.md). Local mock mode does not represent blockchain settlement.
-
-## Docker
+The local Compose profile is loopback-only:
 
 ```bash
 docker compose up --build
 ```
 
-The Compose file publishes `127.0.0.1:8787:8787`, with no host networking, privileged mode, Docker socket, host filesystem mount, or secret.
-
-## Tests
+Run tests with:
 
 ```bash
-python3 -m unittest discover -s tests -v
+.venv/bin/python -m unittest discover -s tests -v
 ```
 
-This project is local preparation only. It is not an X-Agent submission, public deployment, GitHub PR, or externally registered service.
+The official consuming client is in `agent/consume.mjs`; install its pinned dependencies with `npm ci` in `agent/`. Never place the buyer key in the API container or repository.
+
+## Production deployment
+
+The reviewed VPS deployment uses [`deploy/docker-compose.prod.yml`](deploy/docker-compose.prod.yml) and Caddy. Caddy terminates HTTPS, redirects HTTP, limits request bodies to 256 KB, adds security headers, and rotates logs. The API runs non-root with a read-only filesystem, dropped capabilities, no privilege, no host networking, no Docker socket, one vCPU, and one GB RAM. Only TCP 22, 80, and 443 are intentionally exposed.
+
+See [`deploy/README.md`](deploy/README.md), [`ARCHITECTURE.md`](ARCHITECTURE.md), and [`SECURITY.md`](SECURITY.md).
+
+## Public submission materials
+
+- Hedera flow and proof: [`HEDERA-X402.md`](HEDERA-X402.md)
+- Architecture: [`ARCHITECTURE.md`](ARCHITECTURE.md)
+- API contract: [`API-SCHEMA.md`](API-SCHEMA.md)
+- Demo: [`DEMO-SCRIPT.md`](DEMO-SCRIPT.md)
+- X-Agent package draft: [`xagent-submission/`](xagent-submission/)
+
+No GitHub repository has been created or pushed by this preparation phase, and no external submission has been made.
+
+## License
+
+MIT; see [`LICENSE`](LICENSE). Third-party dependencies retain their respective licenses.

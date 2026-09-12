@@ -2,7 +2,7 @@
 
 ## Current official requirements
 
-The current ETHOnline 2026 Hedera AI & Agentic Payments bounty requires a live x402-gated service on Hedera testnet or mainnet settled through Blocky402, a consuming platform or agent completing at least one real paid request, a public GitHub repository with setup/architecture/payment-flow documentation, and a demo video of five minutes or less. This project will use Hedera testnet only.
+The current ETHOnline 2026 Hedera AI & Agentic Payments bounty calls for an agent or multi-agent system that executes at least one Hedera TESTNET payment or financial operation, uses an accepted agentic/payment technology such as x402, publishes source and payment-flow documentation, and demonstrates the autonomous payment in a video of five minutes or less. This project uses Hedera testnet only.
 
 References:
 
@@ -37,20 +37,21 @@ The existing unpaid `POST /v1/qualify` remains unchanged. The paid route is `POS
 
 ## Implementation status
 
-Implemented locally:
+Implemented and deployed:
 
 * x402 v2 `402 Payment Required` response and base64 `PAYMENT-REQUIRED` header.
 * Hedera `exact` / `hedera:testnet` requirements using native HBAR (`0.0.0`) by default.
 * Accepts `PAYMENT-SIGNATURE` and `X-PAYMENT` payment headers.
 * Remote mode posts the canonical v2 envelope to Blocky402 `/verify` and `/settle`.
 * Local-only mock mode requires the explicit marker `mock: local-test-only` and performs no network or blockchain activity.
-* Python protocol client for mock flow and a Node client using the official `@x402/hedera` signer path for the future approved testnet run.
+* Python protocol client for mock flow and a Node client using the official `@x402/hedera` signer path.
+* Public HTTPS deployment at `https://qualifier.cryptoleaks.agency` with the reviewed core commit bound by `/health` and the proof endpoint.
 
-The configured default amount is `100000` tinybars, or `0.001 HBAR`, but no real or testnet payment has been attempted.
+The configured amount is `100000` tinybars, or `0.001 HBAR`. One real Hedera TESTNET payment proof was completed on 2026-09-12; see `evidence/hedera-real/payment-proof-redacted.json`.
 
-## Wallet/account requirement — approval gate
+## Wallet/account handling
 
-Before a real testnet request, two dedicated Hedera ECDSA testnet accounts are required by the reference flow:
+The completed proof used two dedicated Hedera ECDSA testnet accounts:
 
 1. Buyer/client account: signs the payment payload and pays the testnet amount/fees.
 2. Seller/pay-to account: receives the payment; its account ID is `X402_PAY_TO`.
@@ -64,7 +65,7 @@ Required secrets and storage after approval:
 * `X402_PAY_TO`: seller account ID; non-secret configuration.
 * `X402_FEE_PAYER`: facilitator-advertised fee payer; non-secret configuration.
 
-The service itself should not hold a buyer private key. The project currently has no account, wallet, private key, `.env`, or external registration.
+The service itself does not hold a buyer private key. The key was loaded only into the local consuming-agent runtime and was not logged or written to evidence.
 
 ## Faucet and funds
 
@@ -80,18 +81,18 @@ Mock-only local flow:
 X402_MODE=mock X402_PAY_TO=0.0.1234 .venv/bin/python agent/consume.py examples/site-ready.json
 ```
 
-Approved real testnet flow, not executed:
+Real testnet flow (completed once; do not repeat without approval):
 
 ```bash
 cd agent
 corepack pnpm install --frozen-lockfile
 HEDERA_CLIENT_ACCOUNT_ID=0.0.x \
 HEDERA_CLIENT_PRIVATE_KEY='[protected runtime value]' \
-SERVICE_URL='https://approved-service.example/v1/paid/qualify' \
+ SERVICE_URL='https://qualifier.cryptoleaks.agency/v1/paid/qualify' \
 node consume.mjs ../examples/site-ready.json
 ```
 
-The real flow must use a protected secret store or process environment, must not print the key, and must preserve request/402/sign/retry/result evidence. The command above must not be run until the approval gate is cleared.
+The completed flow used a protected process environment, did not print the key, and preserved redacted request/402/sign/retry/result evidence. Do not repeat the payment proof.
 
 ## Evidence structure
 
@@ -102,7 +103,7 @@ evidence/
 │   ├── initial-402.json
 │   ├── retry-result.json
 │   └── test-log.txt
-└── hedera-testnet/              # empty until explicitly approved
+└── hedera-real/                # one real Hedera TESTNET proof; redacted only
     ├── initial-402.json
     ├── payment-response-redacted.json
     ├── qualification-result.json
@@ -119,12 +120,12 @@ Never store private keys, signed payloads, access tokens, or unredacted personal
 - [x] Explicit Hedera testnet configuration.
 - [x] Local mock payment flow and consuming client.
 - [x] Real Hedera client path using `@x402/hedera`.
-- [ ] Dedicated buyer and seller testnet accounts approved and created.
-- [ ] Testnet HBAR obtained from faucet.
-- [ ] Blocky402 `GET /supported` checked immediately before run.
-- [ ] One real paid request settled on Hedera testnet.
-- [ ] Redacted transaction/payment evidence captured.
-- [ ] Public service deployed.
-- [ ] Public GitHub repository and README finalized.
+- [x] Dedicated buyer and seller testnet accounts approved and created.
+- [x] Testnet HBAR obtained from faucet.
+- [x] Blocky402 `GET /supported` checked immediately before run.
+- [x] One real paid request settled on Hedera testnet.
+- [x] Redacted transaction/payment evidence captured.
+- [x] Public service deployed.
+- [x] Public GitHub repository and README package finalized locally.
 - [ ] Five-minute-or-less demo recorded.
 - [ ] External submission authorized and completed.

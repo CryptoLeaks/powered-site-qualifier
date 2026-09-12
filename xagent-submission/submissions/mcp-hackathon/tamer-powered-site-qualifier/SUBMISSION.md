@@ -2,42 +2,48 @@
 
 ## Capability
 
-- **One-line description:** Scores a powered site for Bitcoin-mining and AI/data-center readiness from initial qualification inputs.
-- **Who it helps:** Infrastructure developers, site owners, power developers, and agents triaging early site opportunities.
-- **Capability boundary:** Deterministic screening only. It does not replace engineering, utility, legal, permitting, environmental, financial, or investment diligence.
+Powered-Site Qualifier gives AI agents and infrastructure teams a deterministic first screen for powered sites. It returns separate Bitcoin Mining Readiness and AI/Data Center Readiness scores, evidence gaps, blockers, next questions, and a classification.
+
+It is a screening capability only; it does not replace engineering, utility, legal, permitting, environmental, financial, or investment diligence.
 
 ## Live API
 
-- **API base URL:** Not public; local validation only.
-- **Health-check URL:** `http://127.0.0.1:8787/health` during local validation.
-- **Authentication:** None locally; public deployment authentication/rate limiting remains to be configured.
-- **Rate limits / known limits:** No database or persistence; one request is scored synchronously. Public limits must be added before exposure.
-- **API contract:** `source/API-SCHEMA.md` and the generated `/docs` endpoint.
-
-## Source and reproducibility
-
-- **Source repository:** Not yet created or published.
+- **Base URL:** https://qualifier.cryptoleaks.agency
+- **Health:** https://qualifier.cryptoleaks.agency/health
+- **Deployment proof:** https://qualifier.cryptoleaks.agency/.well-known/xagent-verification.json
+- **Unpaid capability:** `POST https://qualifier.cryptoleaks.agency/v1/qualify`
+- **Paid capability:** `POST https://qualifier.cryptoleaks.agency/v1/paid/qualify`
+- **Authentication:** x402 payment is required only for the paid route; no buyer credential is accepted by the API.
 - **Review commit:** `f70b48d862d1d78b9f3e25346c44409e5b687a44`
-- **Source submitted in this preview:** `source/`
-- **Run tests:** `.venv/bin/python -m unittest discover -s tests -v`
-- **Run locally:** `XAGENT_REVIEW_COMMIT=<review-commit> .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8787`
-- **Deploy:** Build `docker build -t powered-site-qualifier:<review-commit> .`; run with the documented loopback-only Compose profile.
-- **Version binding:** `XAGENT_REVIEW_COMMIT` is returned by `/health` and `/.well-known/xagent-verification.json`.
 
-The service must expose the exact reviewed commit in both proof responses before public submission.
+The public health and proof endpoints return the exact review commit. The API container is private to Docker; only the HTTPS reverse proxy is public.
 
-## Verification
+## Payment proof
 
-See `verification/README.md` for local health, proof, capability, and invalid-input calls.
+The paid route uses x402 v2 `exact` on Hedera TESTNET with native HBAR asset `0.0.0` and Blocky402 `/verify` and `/settle`. One real proof completed successfully:
 
-## Security and data handling
+- Buyer: `0.0.10488940`
+- Seller/pay-to: `0.0.10489770`
+- Amount: `100000` tinybars / `0.001` testnet HBAR
+- Transaction: `0.0.7162784@1789186391.831327025`
+- Blocky402 verify: success
+- Blocky402 settle: success
+- Final API response: HTTP 200, classification `READY`
 
-- No confidential site or client data is included.
-- No secrets, wallets, private keys, payment integrations, database, outbound scoring calls, shell execution, or remote downloads.
-- See `source/SECURITY.md` for container and deployment restrictions.
+Evidence is redacted and included under `source/evidence/hedera-real/`.
 
-## Support
+## Reproducibility
 
-- **Team / builder:** Tamer / Horse Lab
-- **Contact:** To be supplied through the approved private review channel before submission.
-- **License / rights:** To be finalized before external submission; all submitted source and examples must be authorized for review.
+```bash
+cd source
+python3 -m unittest discover -s tests -v
+docker compose up --build
+```
+
+The consuming agent is `source/agent/consume.mjs` and uses the official `@x402/hedera` client. The buyer private key must be provided only through a protected runtime environment when an approved testnet run is performed. It must never be committed, logged, or placed in the API container.
+
+The production deployment configuration is in `source/deploy/`; it uses Caddy for automatic HTTPS, publishes only TCP 80/443, limits the API to one vCPU/one GB RAM, and runs the API non-root with a read-only filesystem and dropped capabilities.
+
+## Source and rights
+
+The complete reviewed source is under `source/`. The public repository name recommended for this package is `powered-site-qualifier`; the GitHub owner/repository URL is intentionally not invented before repository creation.
