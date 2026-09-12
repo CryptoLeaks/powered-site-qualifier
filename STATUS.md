@@ -41,6 +41,19 @@ Local mock flow passed: initial HTTP `402`, Hedera testnet payment requirement, 
 
 The x402 implementation commit is `306a8b2c0828eb65e7e51e4f2725057b00ef536d`. The repository remains local and clean.
 
+## Real Hedera testnet proof gate
+
+Read-only Blocky402 check completed on 2026-09-12:
+
+* Endpoint: `https://api.testnet.blocky402.com/supported`
+* Result: Hedera testnet advertised.
+* Result: x402 v2 `exact` advertised.
+* Result: facilitator fee payer `0.0.7162784` advertised.
+* Result: no testnet API key required according to the current Blocky402 documentation.
+* Native HBAR route: selected using asset `0.0.0`, which is documented by the official Hedera x402 mechanism.
+
+Stopped before account creation because the official Hedera Portal requires an authenticated interactive session that is not available in this workspace. No buyer/seller keys, accounts, `.secrets` file, faucet request, facilitator call, transaction, or real evidence were created. No assumptions were substituted for the missing portal access.
+
 ## Local verification
 
 Scoring, API, container, x402 mock-flow, and example-contract verification completed with:
