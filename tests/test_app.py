@@ -16,6 +16,10 @@ class AppTests(unittest.TestCase):
         self.assertIn("charset=utf-8", response.headers["content-type"])
         self.assertIn("Powered-Site Qualifier", response.body.decode())
         self.assertIn("Site Data", response.body.decode())
+        self.assertIn("Run Qualification", response.body.decode())
+        self.assertIn("Load Example Site", response.body.decode())
+        self.assertIn("/v1/qualify", response.body.decode())
+        self.assertIn("/v1/paid/qualify", response.body.decode())
 
     def test_health_and_paid_boundary_remain_available(self):
         self.assertEqual(health()["status"], "ok")
