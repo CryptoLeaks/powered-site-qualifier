@@ -3,7 +3,7 @@ services:
     build:
       context: ..
       dockerfile: Dockerfile
-    image: powered-site-qualifier:f70b48d862d1d78b9f3e25346c44409e5b687a44
+    image: powered-site-qualifier:b2fc190fad8705c89ca2f07b0d0cb19c8c6c75ee
     environment:
       XAGENT_REVIEW_COMMIT: ${XAGENT_REVIEW_COMMIT:?Set XAGENT_REVIEW_COMMIT to the exact deployed reviewed commit}
       X402_MODE: remote

@@ -35,7 +35,7 @@ curl --fail --silent --request POST \
 The live reviewed binding is supplied explicitly to the secure deployment at deploy time. The exact value is exposed by both `/health` and `/.well-known/xagent-verification.json`; verify it before a demo:
 
 ```json
-{"status":"ok","commit":"<exact deployed reviewed commit>"}
+{"status":"ok","commit":"b2fc190fad8705c89ca2f07b0d0cb19c8c6c75ee"}
 ```
 
 ## Example result

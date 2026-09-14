@@ -39,7 +39,7 @@ Implemented locally, without accounts or payment execution:
 
 Local mock flow passed: initial HTTP `402`, Hedera testnet payment requirement, consuming-agent retry, HTTP `200`, and `READY` qualification. The separate real proof below completed the facilitator and Hedera transaction steps.
 
-The x402 implementation commit is `306a8b2c0828eb65e7e51e4f2725057b00ef536d`. The repository remains local and clean.
+The x402 implementation was completed before the final interactive-demo audit. The public repository is now live and clean; no payment logic was changed by the audit.
 
 ## Real Hedera testnet proof gate
 
@@ -97,8 +97,8 @@ Official references checked: [X-Agent repository](https://github.com/xagentAI/xa
 * No direct API port is public; only proxy ports 80/443 are exposed.
 * No additional real/testnet payment or facilitator call will be made in this run.
 * No Blocky402 registration or external account created.
-* No GitHub fork, branch, push, PR, or X-Agent submission.
-* Public deployment and HTTPS endpoint are now live; GitHub publication remains pending.
+* Public GitHub repository is live at `https://github.com/CryptoLeaks/powered-site-qualifier`.
+* Public deployment and HTTPS endpoint are live; the root page is an interactive browser tool.
 * Real paid-request evidence is complete; demo video remains outstanding.
 
 ## Before submission
@@ -109,7 +109,7 @@ Official references checked: [X-Agent repository](https://github.com/xagentAI/xa
 
 ## Local review binding
 
-The exact core-service review commit is `f70b48d862d1d78b9f3e25346c44409e5b687a44`. It is inserted into the X-Agent preview metadata. The local runtime must receive it through `XAGENT_REVIEW_COMMIT`; the public deployment must expose the same 40-character value from both proof endpoints.
+The final reviewed/deployed core-service commit is `b2fc190fad8705c89ca2f07b0d0cb19c8c6c75ee`. The runtime receives it through `XAGENT_REVIEW_COMMIT`; the public deployment exposes the same 40-character value from both proof endpoints.
 
 ## Public deployment completed
 
@@ -128,7 +128,7 @@ The exact core-service review commit is `f70b48d862d1d78b9f3e25346c44409e5b687a4
 1. ETHOnline/Hedera deadline: freeze the base API, decide the paid route, then implement and test the x402/Blocky402/Hedera testnet wrapper and consuming agent.
 2. X-Agent deadline: deploy the same core service only after the payment branch is stable or keep the X-Agent submission on the unpaid core API; verify the exact reviewed commit and prepare the public submission package before September 19.
 
-Current estimated ETHOnline/Hedera readiness: 75%. The single real Hedera TESTNET payment proof and public HTTPS service are complete; public repository, demo, and final submission remain outstanding.
+Current estimated ETHOnline/Hedera readiness: 100% for the implemented service. The single real Hedera TESTNET payment proof, public HTTPS service, public repository, and interactive demo are complete; demo recording and any external submission remain human actions.
 
 ## Real Hedera TESTNET proof completed
 
@@ -146,7 +146,7 @@ On 2026-09-12, exactly one payment was executed through the official `@x402/hede
 
 Redacted evidence is in `evidence/hedera-real/`. No private key or raw signed payload was stored. The API remains private to Docker; no GitHub push, external submission, or mainnet action occurred.
 
-Remaining blockers before submission: public GitHub publication, five-minute-or-less demo video, final rights confirmation, final public links, and explicit submission authorization.
+Remaining human actions before submission: five-minute-or-less demo video, final rights confirmation, and explicit submission authorization.
 
 ## Public deployment preparation and result
 
@@ -161,4 +161,4 @@ Preparation completed without external exposure:
 * Public health/proof/qualification checks passed; unpaid paid endpoint returned HTTP 402 with the expected Hedera TESTNET terms.
 * External connection to `89.58.39.50:8787` failed as expected.
 
-Updated readiness estimates: ETHOnline `85%`; X-Agent `85%`. The sanitized public package is committed locally. Remaining actions are GitHub publication, rights/license confirmation, demo recording, and external submissions.
+Final service audit status: public repository and links are live, the exact reviewed commit is verified publicly, and only the demo recording/external submission actions remain.
