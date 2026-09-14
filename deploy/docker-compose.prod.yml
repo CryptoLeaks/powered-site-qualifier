@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     image: powered-site-qualifier:f70b48d862d1d78b9f3e25346c44409e5b687a44
     environment:
-      XAGENT_REVIEW_COMMIT: f70b48d862d1d78b9f3e25346c44409e5b687a44
+      XAGENT_REVIEW_COMMIT: ${XAGENT_REVIEW_COMMIT:?Set XAGENT_REVIEW_COMMIT to the exact deployed reviewed commit}
       X402_MODE: remote
       X402_FACILITATOR_URL: https://api.testnet.blocky402.com
       X402_NETWORK: hedera:testnet

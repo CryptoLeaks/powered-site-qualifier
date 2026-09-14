@@ -45,7 +45,8 @@ Implemented and deployed:
 * Remote mode posts the canonical v2 envelope to Blocky402 `/verify` and `/settle`.
 * Local-only mock mode requires the explicit marker `mock: local-test-only` and performs no network or blockchain activity.
 * Python protocol client for mock flow and a Node client using the official `@x402/hedera` signer path.
-* Public HTTPS deployment at `https://qualifier.cryptoleaks.agency` with the reviewed core commit bound by `/health` and the proof endpoint.
+* Public HTTPS deployment at `https://qualifier.cryptoleaks.agency` with the final reviewed deployment commit bound by `/health` and the proof endpoint. The secure compose deployment receives that exact commit explicitly; it is not hardcoded into payment settings.
+* The root page includes an unpaid x402 demo that parses the live HTTP 402 requirements and never signs or submits a payment.
 
 The configured amount is `100000` tinybars, or `0.001 HBAR`. One real Hedera TESTNET payment proof was completed on 2026-09-12; see `evidence/hedera-real/payment-proof-redacted.json`.
 

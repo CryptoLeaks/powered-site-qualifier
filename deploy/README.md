@@ -8,11 +8,11 @@ Before deployment, replace `PUBLIC_DOMAIN` with the approved FQDN in a VPS-only 
 <chosen-fqdn>  A  89.58.39.50
 ```
 
-Then validate and start only after explicit approval:
+Then validate and start only after explicit approval. Supply the exact reviewed commit being deployed so `/health` and the proof endpoint bind to the same source revision:
 
 ```bash
-docker compose --env-file deploy/.env -f deploy/docker-compose.prod.yml config
-docker compose --env-file deploy/.env -f deploy/docker-compose.prod.yml up -d --build
+XAGENT_REVIEW_COMMIT=<40-character-reviewed-commit> docker compose --env-file deploy/.env -f deploy/docker-compose.prod.yml config
+XAGENT_REVIEW_COMMIT=<40-character-reviewed-commit> docker compose --env-file deploy/.env -f deploy/docker-compose.prod.yml up -d --build powered-site-qualifier
 ```
 
 The API uses only the seller/pay-to account ID and Blocky402 testnet configuration. The buyer key stays outside the API container and is not required by this service.

@@ -11,6 +11,8 @@ It also reports positives, missing information, major blockers, next questions, 
 
 Public base URL: <https://qualifier.cryptoleaks.agency>
 
+The live root URL is an interactive browser tool: <https://qualifier.cryptoleaks.agency/#tool>. It submits the form to the real `POST /v1/qualify` endpoint and renders the returned scores, blockers, missing information, and next questions.
+
 | Endpoint | Purpose |
 |---|---|
 | `GET /health` | Health and exact reviewed commit binding |
@@ -30,15 +32,17 @@ curl --fail --silent --request POST \
   --data @examples/site-ready.json
 ```
 
-The live reviewed binding is:
+The live reviewed binding is supplied explicitly to the secure deployment at deploy time. The exact value is exposed by both `/health` and `/.well-known/xagent-verification.json`; verify it before a demo:
 
 ```json
-{"status":"ok","commit":"f70b48d862d1d78b9f3e25346c44409e5b687a44"}
+{"status":"ok","commit":"<exact deployed reviewed commit>"}
 ```
 
 ## Example result
 
 `examples/site-ready.json` produces `READY` with Bitcoin Mining Readiness `100` and AI/Data Center Readiness `100`. The response also includes the known-input basis, key positives, missing information, blockers, and recommended next questions. `examples/site-incomplete.json` demonstrates how unknowns become evidence gaps instead of guesses.
+
+The browser's fictional Oklahoma demo site uses 20 MW, $0.055/kWh, grid power, 138 kV, and `interconnected` utility status; the live API returns Bitcoin `97`, AI/Data Center `98`, and `READY` for that example.
 
 ## Hedera x402 payment flow
 
@@ -103,7 +107,7 @@ See [`deploy/README.md`](deploy/README.md), [`ARCHITECTURE.md`](ARCHITECTURE.md)
 - Demo: [`DEMO-SCRIPT.md`](DEMO-SCRIPT.md)
 - X-Agent package draft: [`xagent-submission/`](xagent-submission/)
 
-No GitHub repository has been created or pushed by this preparation phase, and no external submission has been made.
+The public source repository is live at <https://github.com/CryptoLeaks/powered-site-qualifier>. The interactive browser tool and HTTPS API are live at <https://qualifier.cryptoleaks.agency>. The successful Hedera testnet proof is redacted and documented in [`evidence/hedera-real/payment-proof-redacted.json`](evidence/hedera-real/payment-proof-redacted.json). No external hackathon submission or additional payment is implied by repository publication.
 
 ## License
 
