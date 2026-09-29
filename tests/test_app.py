@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 from starlette.requests import Request
 
-from app.main import COMMIT, SiteQualificationRequest, app, health, landing_page, paid_qualify, verification
+from app.main import COMMIT, SiteQualificationRequest, api_index, app, health, landing_page, paid_qualify, verification
 
 
 class AppTests(unittest.TestCase):
@@ -34,6 +34,20 @@ class AppTests(unittest.TestCase):
         self.assertEqual(response.body.decode()[:1], "{")
         self.assertIn(b"hedera:testnet", response.body)
         self.assertIn(b"0.0.10489770", response.body)
+
+    def test_v1_api_index_is_backward_compatible(self):
+        self.assertEqual(
+            api_index(),
+            {
+                "name": "Powered-Site Qualifier API",
+                "status": "ok",
+                "version": "v1",
+                "health": "/health",
+                "qualify": "/v1/qualify",
+                "paid_qualify": "/v1/paid/qualify",
+                "verification": "/.well-known/xagent-verification.json",
+            },
+        )
 
     def test_verification_binds_to_runtime_commit(self):
         self.assertEqual(verification()["commit"], COMMIT)

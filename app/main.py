@@ -194,6 +194,19 @@ def health() -> dict[str, str]:
     return {"status": "ok", "commit": COMMIT}
 
 
+@app.get("/v1")
+def api_index() -> dict[str, str]:
+    return {
+        "name": "Powered-Site Qualifier API",
+        "status": "ok",
+        "version": "v1",
+        "health": "/health",
+        "qualify": "/v1/qualify",
+        "paid_qualify": "/v1/paid/qualify",
+        "verification": "/.well-known/xagent-verification.json",
+    }
+
+
 @app.get("/.well-known/xagent-verification.json")
 def verification() -> dict[str, Any]:
     return {"schemaVersion": 1, "slug": SLUG, "commit": COMMIT}
