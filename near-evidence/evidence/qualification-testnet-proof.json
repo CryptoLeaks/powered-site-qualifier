@@ -1,0 +1,36 @@
+{
+  "network": "NEAR TESTNET",
+  "fictional": true,
+  "accountId": "cl-evidence-1794509534759.testnet",
+  "anchorTx": "4wCWNhiX7RSVsJNpR84eaimPow9mCtWpm4rNrkdM6qWY",
+  "revokeTx": "3diMW4gCpHB5rAJ78D5yFPUBX3YtbzGB9DwQU1owtkcg",
+  "checks": [
+    "actual Python qualification committed",
+    "RPC final readback",
+    "tampered report rejected locally",
+    "duplicate rejected by contract",
+    "onchain revocation read back"
+  ],
+  "original": {
+    "receipt": {
+      "id": "48ef42be432842bf510e5ba20b07c4d47d350f43ad7e0d0481e109b5b5c8bba9",
+      "digest": "1b82fd72e9a4d1add9c0ea4e046220475f981af6176d172fe9c089e8c1ef211a",
+      "issuer": "cl-evidence-1794509534759.testnet",
+      "anchored_at_ns": "1794509698479150476",
+      "revoked": false
+    },
+    "blockHash": "CibGM2airaJozfTe42KMFD2ZcsFaMg7v8eVAoqnG6sdH",
+    "blockHeight": 277402727
+  },
+  "revoked": {
+    "receipt": {
+      "id": "48ef42be432842bf510e5ba20b07c4d47d350f43ad7e0d0481e109b5b5c8bba9",
+      "digest": "1b82fd72e9a4d1add9c0ea4e046220475f981af6176d172fe9c089e8c1ef211a",
+      "issuer": "cl-evidence-1794509534759.testnet",
+      "anchored_at_ns": "1794509698479150476",
+      "revoked": true
+    },
+    "blockHash": "2P5F8L7AZen13rRgUEbcAfuWE57YsiTPiVjZg1gyyAvp",
+    "blockHeight": 277402795
+  }
+}

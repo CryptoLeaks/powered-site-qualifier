@@ -1,0 +1,1 @@
+aa27139d9607ed57f5ebedafb714a1deb504e110f1dce510042ce5dc81e50901  build/contract.wasm

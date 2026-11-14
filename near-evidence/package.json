@@ -1,0 +1,20 @@
+{
+  "name": "near-powered-site-evidence",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "near-sdk-js build contract.js build/contract.wasm",
+    "test": "node --test test/*.test.mjs",
+    "test:sandbox": "node test/sandbox.mjs",
+    "demo": "node demo.mjs"
+  },
+  "devDependencies": {
+    "near-sdk-js": "2.0.0",
+    "near-workspaces": "5.0.0"
+  },
+  "overrides": {
+    "tar": "7.5.23",
+    "decode-uri-component": "0.5.1"
+  }
+}

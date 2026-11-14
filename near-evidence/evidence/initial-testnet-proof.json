@@ -1,0 +1,19 @@
+{
+  "network": "NEAR TESTNET",
+  "accountId": "cl-evidence-1794509534759.testnet",
+  "deploymentTx": "93UifC2RzJrQcBjM95FnJ7dbCgBmJw6u97kYU2MKhsh5",
+  "anchorTx": "J56jqA1qBn1LQvzv169kPJAADWHiYNTvsetepcqTnL9w",
+  "receipt": {
+    "id": "5ab6e9a63fe00ba899a969c2a7c5f9add4688fc5f3fd6520af0945ac5d67e572",
+    "digest": "26cc6260be99620fbbca92e2f7784db3ab806a3d231cbf1bf11a60c5928c3db4",
+    "issuer": "cl-evidence-1794509534759.testnet",
+    "anchored_at_ns": "1794509635962110598",
+    "revoked": false
+  },
+  "blockHash": "6ipJyKyvS2FP4f4Hj7Y3WGk8Bg1njdi4Tf46zwUohJUy",
+  "blockHeight": 277402616,
+  "verification": {
+    "valid": true,
+    "reason": "Exact report matches issuer commitment. Facts are NOT independently verified."
+  }
+}
