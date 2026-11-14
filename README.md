@@ -1,5 +1,15 @@
 # Powered-Site Qualifier
 
+## NEAR HACKATHON 2026 extension
+
+This branch adds **Powered-Site Evidence Receipts**: salted report-integrity commitments and issuer-controlled revocation on NEAR TESTNET. It does not attest that site facts are true. The existing qualifier and Hedera work below are pre-existing baseline, not new NEAR work.
+
+- [New integration, testnet evidence and reproduction steps](near-evidence/README.md)
+- [Demonstration script](near-evidence/DEMO-SCRIPT.md)
+- [Exact baseline-to-hackathon diff](https://github.com/CryptoLeaks/powered-site-qualifier/compare/41d099a75d1fca4962b5a5bab731e958125066d7...hackathon/near-evidence)
+- Testnet issuer: `cl-evidence-1794509534759.testnet`
+- No production or mainnet deployment is included; publication is not competition submission.
+
 Powered-Site Qualifier is a deterministic, machine-readable screening API for early powered-site diligence. Given structured site facts, it returns two separate readiness scores:
 
 - **Bitcoin Mining Readiness** — power, capacity, price, utility status, land, commercial path, and operating inputs relevant to mining-scale deployment.
